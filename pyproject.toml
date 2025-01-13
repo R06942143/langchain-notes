@@ -1,0 +1,26 @@
+[project]
+name = "langchain-notes"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Conrad",email = "r06942143@ntu.edu.tw"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.14.1"
+poethepoet = "^0.32.1"
+
+[tool.poe.tasks]
+typecheck = "mypy ."
+# Add more tasks as needed:
+# test = "pytest"
+# lint = "ruff check ."
