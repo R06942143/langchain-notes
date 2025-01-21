@@ -34,7 +34,7 @@ You should now have Anaconda installed and ready to use!
 ### Create a new environment
 
 ```bash
-conda create -n langchain-notes python=3.13
+conda create -n langchain-notes python=3.12
 ```
 
 ### Activate the environment
@@ -88,7 +88,7 @@ Poetry will manage your project's dependencies in `pyproject.toml` and `poetry.l
 3. Add the following configuration to `mypy.ini`:
    ```ini
    [mypy]
-   python_version = 3.13
+   python_version = 3.12
    warn_return_any = True
    warn_unused_configs = True
    disallow_untyped_defs = True
@@ -105,18 +105,6 @@ Poetry will manage your project's dependencies in `pyproject.toml` and `poetry.l
    [mypy-mycode.*]
    disallow_untyped_defs = True
    ```
-
-4. Add a script to your `pyproject.toml` to run type checking:
-   ```toml
-   [tool.poetry.scripts]
-   typecheck = "mypy ."
-   ```
-
-Now you can run type checking with:
-
-```bash
-poetry run typecheck
-```
 
 
 ### Configure Poe the Poet for Task Running
@@ -151,6 +139,49 @@ Poe provides a more flexible task runner compared to Poetry scripts, allowing fo
 
 For example, to create a task with dependencies:
 
+### Configure Ruff for Linting
+
+1. Install Ruff using Poetry:
+   ```bash
+   poetry add ruff --dev
+   ```
+
+2. Add Ruff configuration to `pyproject.toml`:
+   ```toml
+   [tool.ruff]
+   # Enable pycodestyle ('E'), pyflakes ('F'), and import sorting ('I')
+   select = ["E", "F", "I"]
+   
+   # Same as Black.
+   line-length = 88
+   
+   # Assume Python 3.12
+   target-version = "py312"
+   
+   [tool.ruff.per-file-ignores]
+   # Ignore `F401` (unused imports) in all `__init__.py` files
+   "__init__.py" = ["F401"]
+   ```
+
+3. Add a lint task to your Poe configuration in `pyproject.toml`:
+   ```toml
+   [tool.poe.tasks]
+   lint = "ruff check ."
+   lint-fix = "ruff check . --fix"
+   ```
+
+4. Run the linter using:
+   ```bash
+   poetry run poe lint
+   # or to automatically fix issues:
+   poetry run poe lint-fix
+   ```
+
+Ruff is an extremely fast Python linter written in Rust, providing:
+- Speed: 10-100x faster than traditional Python linters
+- Compatibility with popular linting rules (flake8, isort, etc.)
+- Automatic code fixes for many common issues
+- Highly configurable through `pyproject.toml`
 
 
 
